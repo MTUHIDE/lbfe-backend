@@ -1,0 +1,12 @@
+# Build prod
+FROM node:lts-alpine as build-prod
+
+ARG GITLAB_TOKEN
+WORKDIR /service
+RUN apk update && apk upgrade && apk add bash
+COPY package*.json ./
+RUN npm install --production 
+COPY src/ ./src/ 
+
+# run the binary
+ENTRYPOINT ["node", "-r", "esm", "./server/app.js"]

@@ -1,14 +1,39 @@
 {
-    "private": true,
+    "name": "lbfe-driverscheduler-api",
+    "version": "0.1.0",
+    "author": "HIDE - LBFE Team",
+    "engines": {
+        "node": "^18.8.0"
+    },
+    "description": "api",
+    "main": "app.js",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "start": ". server/config/.env.development && nodemon server/app.js",
+        "runit": "nodemon server/app.js",
+        "dockerify": "docker build -t ec-api-test -f Dockerfile.ci . && docker run --rm ec-api-test",
+        "generate-token": ". server/config/.env.development && node ./tasks/access-tokens.js",
+        "server-dev": ". server/config/.env.development && nodemon --inspect server/app.js",
+        "woohoo": "echo \"Woohoo!!!!!\" && exit"
     },
     "devDependencies": {
-        "axios": "^0.27",
-        "laravel-vite-plugin": "^0.6.0",
-        "lodash": "^4.17.19",
-        "postcss": "^8.1.14",
-        "vite": "^3.0.0"
+        "eslint": "^8.23.0",
+        "nodemon": "^2.0.19"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "bcrypt": "^5.0.1",
+        "body-parser": "^1.20.0",
+        "connect-session-sequelize": "^7.1.5",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "ejs": "^3.1.8",
+        "express": "^4.18.1",
+        "express-session": "^1.17.3",
+        "express-winston": "^4.2.0",
+        "helmet": "^6.0.0",
+        "passport": "^0.6.0",
+        "sequelize": "^6.21.6",
+        "tedious": "^15.1.0",
+        "winston": "^3.8.2"
     }
 }

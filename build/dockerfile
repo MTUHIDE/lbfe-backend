@@ -1,0 +1,7 @@
+# Build dev
+FROM node:18-alpine as build-dev
+
+RUN apk update && apk upgrade && apk add bash
+COPY . .
+RUN npm install
+ENTRYPOINT ["node", "run", "start"]

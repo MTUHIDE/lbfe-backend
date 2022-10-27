@@ -1,0 +1,12 @@
+{"level":"info","message":"Environment: dev"}
+{"level":"error","message":"User Notifications are disabled"}
+{"level":"info","message":"Listening on port: 9010"}
+{"level":"info","message":"Connected to database:localhost:1433/lbfe_dev"}
+{"level":"info","message":"Environment: dev"}
+{"level":"error","message":"User Notifications are disabled"}
+{"level":"info","message":"Listening on port: 9010"}
+{"level":"info","message":"Connected to database:localhost:1433/lbfe_dev"}
+{"level":"info","message":"GET / 404 3ms","meta":{}}
+{"level":"info","message":"GET /favicon.ico 404 0ms","meta":{}}
+{"level":"info","message":"GET /v1 404 1ms","meta":{}}
+{"level":"info","message":"GET /status 200 1ms","meta":{}}
