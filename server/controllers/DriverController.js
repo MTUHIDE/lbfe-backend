@@ -1,2 +1,6 @@
-// Controller functions for Drivers go in here
+// const db = require('../models')
+// const { Op } = require('sequelize')
 
+const methods = {}
+
+module.exports = methods

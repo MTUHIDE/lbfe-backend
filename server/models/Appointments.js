@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             appointmentId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: "appointmentId",
+                field: "id",
                 primaryKey: true,
                 autoIncrement: true,
                 searchable: true,

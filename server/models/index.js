@@ -5,7 +5,7 @@ const CONFIG = require("../config/config");
 
 const basename = path.basename(__filename);
 
-// Define structs for calling our DB connection
+// Define a struct for calling our DB connection
 const db = {
     driverScheduler: new Sequelize(
         CONFIG.db_name,
@@ -46,12 +46,12 @@ fs.readdirSync(__dirname)
         return file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js";
     })
     .forEach(file => {
-        // Export models under 'db.models' --> Lets us use sequelize to call our tables by using 'db.modelName'
+        // Export models under 'db.models' --> Lets us use sequelize to call our tables in javascript by using 'db.modelName'
         const model = require(path.join(__dirname, file))(db.driverScheduler, DataTypes);
         db[model.name] = model;
     });
 
-// Load Foreign Keys constraints into sequelize so it doesn't autogenerate anything funky
+// Load Foreign Keys into sequelize so it doesn't autogenerate
 Object.keys(db).forEach(modelName => {
     if ("associate" in db[modelName]) {
         db[modelName].associate(db);
