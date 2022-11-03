@@ -11,10 +11,13 @@ router.get(`/${baseUrl}/`, AppointmentController.getAppointmentById)
 // Get All Appointments
 router.get(`/${baseUrl}/list/`, AppointmentController.getAllAppointments)
 
-// Create/Update Appointment
-// router.post(`/${baseUrl}/edit`, AppointmentController.createAppointment)
+// Create Appointment
+router.post(`/${baseUrl}/create`, AppointmentController.createAppointment)
 
-// // Delete Appointment
-// router.delete(`/${baseUrl}/delete`, AppointmentController.deleteAppointment)
+// Edit Appointment
+router.post(`/${baseUrl}/edit`, AppointmentController.editAppointment)
+
+// Delete Appointment
+router.delete(`/${baseUrl}/delete`, AppointmentController.deleteAppointment)
 
 module.exports = router
