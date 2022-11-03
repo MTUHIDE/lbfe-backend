@@ -18,32 +18,34 @@ CREATE TABLE dbo.appointments (
   isAllDay TINYINT,
 );
 
+DROP TABLE dbo.clients;
 CREATE TABLE dbo.clients(
-  clientId bigint,
-  firstName nvarchar,
-  lastName nvarchar,
-  fullName nvarchar,
-  address nvarchar,
-  phoneNumber nvarchar,
-  mobility nvarchar,
-  notes nvarchar,
+  clientId int NOT NULL IDENTITY PRIMARY KEY,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  fullName VARCHAR(255),
+  address VARCHAR(255),
+  phoneNumber VARCHAR(255),
+  mobility VARCHAR(255),
+  notes VARCHAR(255),
   numOfCancels int,
-  createdAt datetime,
-  updatedAt datetime,
-  PRIMARY KEY(clientId)
-);
+  createdAt VARCHAR(70),
+  updatedAt VARCHAR(70)
+  );
+
+  DROP TABLE dbo.drivers;
+
 CREATE TABLE dbo.drivers(
-  driverId bigint,
-  firstName nvarchar,
-  lastName nvarchar,
-  fullName nvarchar,
-  insuranceId nvarchar,
-  notes nvarchar,
-  phoneNumber nvarchar,
-  address nvarchar,
-  createdAt datetime,
-  updatedAt datetime,
-  PRIMARY KEY(driverId)
+  driverId int NOT NULL IDENTITY PRIMARY KEY,
+  firstName VARCHAR(255),
+  lastName VARCHAR(255),
+  fullName VARCHAR(255),
+  insuranceId VARCHAR(255),
+  notes VARCHAR(255),
+  phoneNumber VARCHAR(255),
+  address VARCHAR(255),
+  createdAt VARCHAR(70),
+  updatedAt VARCHAR(70)
 );
 -- Add Foreign Key Constraints
 INSERT INTO
