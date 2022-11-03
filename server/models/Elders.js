@@ -5,34 +5,59 @@ module.exports = (sequelize, DataTypes) => {
             elderId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: "id",
+                field: "elderId",
                 primaryKey: true,
                 autoIncrement: true,
                 searchable: true,
                 alias: "Elder ID",
                 aliasValue: "elderId",
             },
-            elderName: {
+
+            firstName: {
                 type: DataTypes.STRING,
                 allowNull: false,
-                field: "elder_name",
+                field: "firstName",
                 searchable: true,
-                alias: "Elder Name",
-                aliasValue: "elder_name",
+                alias: "First Name",
+                aliasValue: "firstname",
             },
-            elderAddress: {
+            lastName: {
                 type: DataTypes.STRING,
-                field: "elder_address",
+                allowNull: false,
+                field: "lastName",
                 searchable: true,
-                alias: "Elder Address",
-                aliasValue: "elder_address",
+                alias: "Last Name",
+                aliasValue: "lastname",
             },
-            elderPhoneNumber: {
+            fullName: { // Concatenated on insert to match firstname and lastname
                 type: DataTypes.STRING,
-                field: "elder_phone_number",
+                allowNull: false,
+                field: "fullName",
                 searchable: true,
-                alias: "Elder Phone Number",
-                aliasValue: "elder_phone_number",
+                alias: "Full Name",
+                aliasValue: "fullname",
+            },
+
+            phoneNumber: {
+                type: DataTypes.STRING,
+                field: "phoneNumber",
+                searchable: true,
+                alias: "Phone Number",
+                aliasValue: "phonenumber",
+            },
+            address: {
+                type: DataTypes.STRING,
+                field: "address",
+                searchable: true,
+                alias: "Driver Address",
+                aliasValue: "driveraddress",
+            },
+            notes: {
+                type: DataTypes.STRING,
+                field: "notes",
+                searchable: true,
+                alias: "Driver Notes",
+                aliasValue: "drivernotes",
             },
             mobility: {
                 type: DataTypes.STRING,
@@ -41,38 +66,31 @@ module.exports = (sequelize, DataTypes) => {
                 alias: "Mobility",
                 aliasValue: "mobility",
             },
-            elderNotes: {
-                type: DataTypes.STRING,
-                field: "elder_notes",
-                searchable: true,
-                alias: "Elder Notes",
-                aliasValue: "elder_notes",
-            },
             numOfCancels: {
                 type: DataTypes.INTEGER,
-                field: "#ofcancels",
+                field: "numOfcancels",
                 searchable: true,
                 alias: "Number of Cancels",
-                aliasValue: "#ofcancels",
+                aliasValue: "numofcancels",
             },
-            createdOn: {
+            createdAt: {
                 type: DataTypes.DATE,
-                field: "createdOn",
+                field: "createdAt",
                 searchable: true,
-                alias: "Created On",
-                aliasValue: "createdon",
+                alias: "Created At",
+                aliasValue: "createdat",
             },
-            updatedOn: {
+            updatedAt: {
                 type: DataTypes.DATE,
-                field: "updatedOn",
+                field: "updatedAt",
                 searchable: true,
-                alias: "Updated On",
-                aliasValue: "updatedon",
+                alias: "Updated At",
+                aliasValue: "updatedat",
             },
         },
         {
             tableName: "Elders",
             timestamps: false,
         },
-    )
-};
+        )
+    };

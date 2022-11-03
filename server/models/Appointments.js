@@ -4,28 +4,34 @@ module.exports = (sequelize, DataTypes) => {
         {
             appointmentId: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
-                field: "id",
+                // allowNull: false, --> Auto increment protects us
+                field: "appointmentId",
                 primaryKey: true,
                 autoIncrement: true,
                 searchable: true,
                 alias: "Appointment ID",
                 aliasValue: "appointmentid",
             },
-            startDateTime: {
-                type: DataTypes.DATE,
+            startDate: {
+                type: DataTypes.STRING, // TODO - FIX UTC Conversion
                 allowNull: false,
-                field: "startDateTime",
+                field: "startDate",
                 searchable: true,
-                alias: "Start Date Time",
+                alias: "Start Date",
                 aliasValue: "startdate",
             },
-            endDateTime: {
-                type: DataTypes.DATE,
-                field: "endDateTime",
+            endDate: {
+                type: DataTypes.STRING, // TODO - FIX UTC Conversion
+                field: "endDate",
                 searchable: true,
-                alias: "End Date Time",
+                alias: "End Date",
                 aliasValue: "enddate",
+            },
+            notes: {
+                type: DataTypes.STRING,
+                field: "notes",
+                searchable: false, // Theres no need to search this
+                alias: "Notes",
             },
             title: {
                 type: DataTypes.STRING,
@@ -39,25 +45,46 @@ module.exports = (sequelize, DataTypes) => {
                 searchable: true,
                 alias: "Pickup Address",
             },
-            dropoffAddress: {
+            destinationAddress: {
                 type: DataTypes.STRING,
-                field: "dropoffAddress",
+                field: "destinationAddress",
                 searchable: true,
-                alias: "Dropoff Address",
+                alias: "Destination Address",
             },
-            createdOn: {
+            createdAt: {
                 type: DataTypes.DATE,
-                field: "createdOn",
+                field: "createdAt",
                 searchable: true,
-                alias: "Created On",
-                aliasValue: "createdon",
+                alias: "Created At",
+                aliasValue: "createdat",
             },
-            updatedOn: {
+            updatedAt: {
                 type: DataTypes.DATE,
-                field: "updatedOn",
+                field: "updatedAt",
                 searchable: true,
-                alias: "Updated On",
-                aliasValue: "updatedon",
+                alias: "Updated At",
+                aliasValue: "updatedat",
+            },
+            driverId: {
+                type: DataTypes.INTEGER,
+                field: "driverId",
+                searchable: true,
+                alias: "Driver ID",
+                aliasValue: "driverid",
+            },
+            clientId: {
+                type: DataTypes.INTEGER,
+                field: "clientId",
+                searchable: true,
+                alias: "Client ID",
+                aliasValue: "clientid",
+            },
+            isCancelled: {
+                type: DataTypes.BOOLEAN,
+                field: "isCancelled",
+                searchable: true,
+                alias: "Is Cancelled",
+                aliasValue: "iscancelled",
             },
             isArchived: {
                 type: DataTypes.BOOLEAN,
