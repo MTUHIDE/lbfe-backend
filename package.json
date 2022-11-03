@@ -12,7 +12,7 @@
         "runit": "nodemon server/app.js",
         "dockerify": "docker build -t ec-api-test -f Dockerfile.ci . && docker run --rm ec-api-test",
         "generate-token": ". server/config/.env.development && node ./tasks/access-tokens.js",
-        "server-dev": ". server/config/.env.development && nodemon --inspect server/app.js",
+        "server-dev": ".\\server\\config\\.env.development.bat && nodemon --inspect server/app.js",
         "woohoo": "echo \"Woohoo!!!!!\" && exit"
     },
     "devDependencies": {
