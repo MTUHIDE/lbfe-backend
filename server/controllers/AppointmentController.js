@@ -94,7 +94,7 @@ const methods = {
         const driverId = req.body.driverId
         const clientId = req.body.clientId
         const isAllDay = req.body.isAllDay
-        const updatedAt = req.body.updatedAt
+        const updatedAt = new Date().toISOString().slice(0, 23).replace('T', ' ')
         const isCancelled = req.body.isCancelled
         const isArchived = req.body.isArchived
 
@@ -135,7 +135,6 @@ const methods = {
     async deleteAppointment(req, res) {
         const aId = req.body.appointmentId
         await db.Appointments.destroy({ where: { appointmentId: aId } })
-        logger.info(`Appointment ${aId} deleted`)
         return res.status(200).json({ message: "success", data: "Appointment deleted." })
     },
 }
