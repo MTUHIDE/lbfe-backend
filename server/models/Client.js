@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define(
-        'Elders',
+        'Clients',
         {
-            elderId: {
+            clientId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: "elderId",
+                field: "clientId",
                 primaryKey: true,
                 autoIncrement: true,
                 searchable: true,
-                alias: "Elder ID",
-                aliasValue: "elderId",
+                alias: "Client ID",
+                aliasValue: "clientId",
             },
 
             firstName: {
@@ -37,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
                 alias: "Full Name",
                 aliasValue: "fullname",
             },
-
             phoneNumber: {
                 type: DataTypes.STRING,
                 field: "phoneNumber",
@@ -89,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "Elders",
+            tableName: "Clients",
             timestamps: false,
         },
         )

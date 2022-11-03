@@ -31,7 +31,7 @@ const methods = {
         return res.status(200).json({ status: "success", count, drivers })
     },
 
-    // Take in the fields for an appoitment, if the appoitment exists, update it, otherwise create it
+    // Take in the fields for an driver, if the driver exists, update it, otherwise create it
     async createDriver(req, res) {
         const firstName = req.body.firstName
         const lastName = req.body.lastName
@@ -57,7 +57,7 @@ const methods = {
         return res.status(200).json({ message: "success", driver })
     },
 
-    // Take in the fields for an appoitment, if the appoitment exists, update it
+    // Take in the fields for an driver, if the driver exists, update it
     async editDriver(req, res) {
         const driverId = req.body.driverId
         const firstName = req.body.firstName
