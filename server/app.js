@@ -91,18 +91,24 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login
 
-// const corsOptions = {
-//     origin(origin, callback) { // TODO - Change the domain once we get one setup
-//         if (!origin || origin.match(/\.lbfe-driverscheduler\.com$/) || CONFIG.disable_cors) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     },
-//     credentials: true,
-//     optionsSuccessStatus: 200,
-// }
-// app.use(cors(corsOptions))
+var allowedOrigins = [
+    'http://localhost:8080', // Default Frontend host
+    // Add LBFE Domain Host here
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // allow requests with no origin 
+        // (like mobile apps or curl requests)
+        if (!origin || origin.match(/\.lbfe-driverscheduler\.com$/) || CONFIG.disable_cors) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}
+app.use(cors(corsOptions))
 
 // Request logger goes before router
 app.use(

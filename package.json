@@ -2,9 +2,6 @@
     "name": "lbfe-driverscheduler-api",
     "version": "0.1.0",
     "author": "HIDE - LBFE Team",
-    "engines": {
-        "node": "^18.8.0"
-    },
     "description": "api",
     "main": "app.js",
     "scripts": {
