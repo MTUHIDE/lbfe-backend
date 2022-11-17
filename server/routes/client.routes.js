@@ -17,6 +17,6 @@ router.post(`/${baseUrl}/create`, ClientController.createClient)
 router.post(`/${baseUrl}/edit`, ClientController.editClient)
 
 // Delete Client
-router.delete(`/${baseUrl}/delete`, ClientController.deleteClient)
+router.post(`/${baseUrl}/delete`, ClientController.deleteClient)
 
 module.exports = router

@@ -17,6 +17,6 @@ router.post(`/${baseUrl}/create`, DriverController.createDriver)
 router.post(`/${baseUrl}/edit`, DriverController.editDriver)
 
 // Delete Driver
-router.delete(`/${baseUrl}/delete`, DriverController.deleteDriver)
+router.post(`/${baseUrl}/delete`, DriverController.deleteDriver)
 
 module.exports = router

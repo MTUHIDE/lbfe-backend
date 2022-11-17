@@ -50,7 +50,6 @@ CREATE TABLE dbo.drivers(
 -- Add Foreign Key Constraints
 INSERT INTO
   [Appointments] (
-    [appointmentId],
     [startDate],
     [endDate],
     [notes],
@@ -66,8 +65,7 @@ INSERT INTO
     [isAllDay]
   ) 
 VALUES(
-    1
-    , '2022-11-03 14:47:35.361'
+     '2022-11-03 14:47:35.361'
     ,'2022-11-03 14:47:35.361'
     ,'Testy Boi'
     ,'Megaworm'

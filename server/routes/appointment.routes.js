@@ -18,6 +18,6 @@ router.post(`/${baseUrl}/create`, AppointmentController.createAppointment)
 router.post(`/${baseUrl}/edit`, AppointmentController.editAppointment)
 
 // Delete Appointment
-router.delete(`/${baseUrl}/delete`, AppointmentController.deleteAppointment)
+router.post(`/${baseUrl}/delete`, AppointmentController.deleteAppointment)
 
 module.exports = router
