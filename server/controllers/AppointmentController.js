@@ -32,7 +32,15 @@ const methods = {
         let startDate = req.query.startDate
         let endDate = req.query.endDate
 
-        if (!startDate || !endDate) return res.status(403).json({ status: "failed", message: "Invalid request." })
+
+        // If startDate is not provided, load all from the beginning of the year
+        if (!startDate)
+            startDate = new Date(new Date().getUTCFullYear(), 0, 1) // 0, 1 -> January 1st
+
+        // If endDate is not provided, load all until the end of the year
+        if (!endDate)
+            endDate = new Date(new Date().getUTCFullYear(), 11, 31) // 11, 31 -> Decemeber 31st
+
 
         // Find range in [StartDate -> EndDate] (Inclusive)
         const appointments = await db.Appointments.findAll({
@@ -62,6 +70,14 @@ const methods = {
         const clientId = req.body.clientId
         const isAllDay = req.body.isAllDay
         const createdDate = new Date().toISOString().slice(0, 23).replace('T', ' ') // Format to sqlserver datetime object
+
+        // Prune input for bad data
+        if (!title)
+            return res.status(403).json({ status: "failed", message: "Invalid request. Must provide a valid title." })
+        if (!startDate)
+            return res.status(403).json({ status: "failed", message: "Invalid request. Must provide a valid startDate." })
+        if (!endDate && (isAllDay == false))
+            return res.status(403).json({ status: "failed", message: "Invalid request. Must provide a valid endDate if appointment is not all day" })
 
         const appointment = await db.Appointments.create({
             startDate: startDate,
@@ -100,15 +116,15 @@ const methods = {
 
         // If user sucks at giving us data, die gracefully
         if (!appointmentId)
-            return res.status(403).json({ message: "error", message: "User provided no appointment id..." })
+            return res.status(403).json({ message: "failed", message: "Invalid Request. Must provide a valid appointmentId" })
 
-        // If we can't find the appointment to edit, die gracefully
-        if (! (await db.Appointments.findOne({
-                attributes: ["appointmentId"],
-                where: { appointmentId: appointmentId },
-                raw: true
-            }))
-        ) return res.status(403).json({ message: "error", message: "Appointment doesn't exist." })
+        // If we can't find the appointment to edit, don't attempt to update anything and die gracefully
+        if (!(await db.Appointments.findOne({
+            attributes: ["appointmentId"],
+            where: { appointmentId: appointmentId },
+            raw: true
+        }))
+        ) return res.status(403).json({ message: "failed", message: "Something went wrong. Check fields and try again." })
 
         const success = await db.Appointments.update({ // returns boolean iff success
             startDate: startDate,
@@ -128,12 +144,24 @@ const methods = {
         )
 
         if (success) return res.status(200).json({ message: "success", message: "Appointment Updated." })
-        return res.status(403).json({ message: "error", message: "Something went wrong. Check fields and try again." })
+        return res.status(403).json({ message: "failed", message: "Something went wrong. Check fields and try again." })
     },
 
     // Full send --> kill anything you tell us to 
     async deleteAppointment(req, res) {
         const aId = req.body.appointmentId
+
+        if (!aId) // Don't give useful error messages. That allows minin --> Just let them stonewall
+            return res.status(403).json({ message: "failed", message: "Something went wrong. Aborting." })
+
+        // If we can't find the appointment to delete, don't attempt to delete anything and die gracefully
+        if (!(await db.Appointments.findOne({
+            attributes: ["appointmentId"],
+            where: { appointmentId: aId },
+            raw: true
+        }))
+        ) return res.status(403).json({ message: "failed", message: "Something went wrong. Aborting." })
+
         await db.Appointments.destroy({ where: { appointmentId: aId } })
         return res.status(200).json({ message: "success", data: "Appointment deleted." })
     },
