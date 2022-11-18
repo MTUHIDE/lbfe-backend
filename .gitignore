@@ -15,3 +15,6 @@ yarn-error.log
 /.idea
 /.vscode
 logs/server.log
+package-lock.json
+server/config/.env.development
+server/config/.env.development.bat
