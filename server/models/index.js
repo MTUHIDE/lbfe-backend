@@ -49,6 +49,7 @@ fs.readdirSync(__dirname)
         // Export models under 'db.models' --> Lets us use sequelize to call our tables in javascript by using 'db.modelName'
         const model = require(path.join(__dirname, file))(db.driverScheduler, DataTypes);
         db[model.name] = model;
+        model.sync()
     });
 
 // Load Foreign Keys into sequelize so it doesn't autogenerate

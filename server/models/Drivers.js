@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
                 aliasValue: "fullname",
             },
             insuranceId: {
-                type: DataTypes.STRING,
+                type: DataTypes.INTEGER,
                 allowNull: false,
                 field: "insuranceId",
                 searchable: true,

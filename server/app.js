@@ -16,6 +16,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const CONFIG = require('./config/config')   // Load structs to pass to express
 const logger = require('./logger/logger')
 const models = require('./models')          // Custom database objects for use with sequelize
+const dbManager = require('./migrations/dbManager')
 
 logger.info(`Environment: ${CONFIG.app}`)   // Post Environment for the 'logs/server.log'
 
@@ -34,11 +35,14 @@ app.use(bodyParser.urlencoded({ limit: '75mb', extended: true, parameterLimit: 5
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+const rootDir = __dirname
+
 // DATABASE
 models.driverScheduler
     .authenticate()
-    .then(() => {
+    .then(async () => {
         logger.info(`Connected to database:${CONFIG.db_host}:${CONFIG.db_port}/${CONFIG.db_name}`)
+        await dbManager.detectDatabase(sequelize, rootDir)
     })
     .catch((error) => {
         logger.error('Unable to connect to SQL database', { error })
@@ -71,6 +75,7 @@ const myStore = new SequelizeStore({
     expiration: 24 * 60 * 60 * 1000, // The maximum age (in milliseconds) of a valid session.
     tableName: 'Sessions',
 })
+
 app.use(
     session({
         secret: CONFIG.session_secret,
@@ -122,7 +127,7 @@ app.use(
 app.options('*', cors())
 
 // Build Router, tagged with an 'api' incase we need to run multiple versions of the API in the future
-const directoryPath = path.join(__dirname, './routes');
+const directoryPath = path.join(rootDir, './routes');
 fs.readdirSync(directoryPath).forEach((route) => {
     app.use('/api', require(`./routes/${route}`))
 })

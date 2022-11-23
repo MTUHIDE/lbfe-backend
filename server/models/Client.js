@@ -67,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
             },
             numOfCancels: {
                 type: DataTypes.INTEGER,
-                field: "numOfcancels",
+                field: "numOfCancels",
                 searchable: true,
                 alias: "Number of Cancels",
                 aliasValue: "numofcancels",
