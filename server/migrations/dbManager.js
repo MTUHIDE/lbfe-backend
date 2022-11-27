@@ -6,17 +6,17 @@ const db = require("../models")
 const logger = require("../logger/logger")
 const { DataTypes } = require("sequelize");
 const path = require("path");
-const _ = require("lodash")
+const _ = require("lodash");
 
 // We will leverage our structs created in 'Models' to populate some tables
 // Each function assumes you are passing it a sequelize object
 
 // Replicate the useful things we need from a table
-var TableObject = function (name, columns, columnCount, meta) {
+var TableObject = function (name, columns, columnCount, rows) {
     this.name = name
     this.columns = columns
     this.columnCount = columnCount
-    this.meta = meta
+    this.rows = rows
 }
 
 // Global counters to help show things at the end
@@ -57,16 +57,7 @@ module.exports = {
         // Load all table schema
         for (var i = 0; i < tableCount; i++) {
             const name = tables[i].TABLE_NAME
-
-            const results = await this.getTableAttributes(sequelize, name)
-
-            // Scrape the 'COLUMN_NAME' off the objects 
-            let columns = results[0]
-            columns = columns.map((c) => {
-                return c.COLUMN_NAME
-            })
-            const columnCount = results[1]
-
+            const { columns, columnCount } = await this.getTableAttributes(sequelize, name)
             dbTables.push(new TableObject(name, columns, columnCount))
         }
 
@@ -78,7 +69,15 @@ module.exports = {
                 SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
                     WHERE TABLE_NAME='${tableName}';
             `, { raw: true }))
-        return results
+
+        // Scrape the 'COLUMN_NAME' off the objects 
+        let columns = results[0]
+        columns = columns.map((c) => {
+            return c.COLUMN_NAME
+        })
+        const columnCount = results[1]
+
+        return {columns, columnCount}
     },
 
     // Load all models from the '/models' directory 
@@ -110,66 +109,55 @@ module.exports = {
 
     // Search the '/seeders' folder for matching 'tableName' to seed
     async loadLocalSeedData(parentDir, tableName) {
-        const dir = parentDir + "/seeders/" + tableName + "SeedMeta.js"
-        let localSeeders = []
+        const seedFile = parentDir + "/seeders/" + tableName + "SeedMeta.js"
 
-        fs.readdirSync(dir)
-            .filter(file => {
-                // Trim extension
-                return file.indexOf(".") !== 0 && file.slice(-3) === ".js";
-            })
-            .forEach(file => {
-                // Export models under 'db.models' --> Lets us use sequelize to call our tables in javascript by using 'db.modelName'
-                const seeder = require(path.join(dir, file));
-                seeder.sync() // Cheat code, auto instantiates if it doesn't exist
-                const columns = seeder.rawAttributes
+        try { // Try to read the meta. If we can, then return true (since we did load and ran whatever was in there)
+            const data = fs.readFileSync(seedFile, 'utf8');
+            console.log(data);
+          } catch (err) {
+            console.error(err);
+          }
 
-                console.log(seeder)
-                return 
-            });
-
-        return localSeeders
+        return false
 
     },
 
     // If the databases are entirely empty, and we are in a dev environment, 
     // and there is meta for it --> seed it
-    async checkToSeed(sequelize, dbTable) {
+    async checkIfEmpty(sequelize, dbTable, parentDir) {
         if ((dbTable.name) && config.app === 'dev') {
             // Look for rows in the table
             const result = await sequelize.query(
                 `SELECT 1 FROM [dbo].[${dbTable.name}]
                     WHERE EXISTS( SELECT [${dbTable.columns[0]}] FROM [dbo].[${dbTable.name}]);`
                 , { raw: true })
-
-            if (result[1] == 0 && dbTable.name != "Sessions") { // If there's nothing, seed it
+            
+            const tableName = dbTable.name
+            if (result[1] == 0 && tableName != "Sessions") { // If there's nothing, seed it
                 if (config.db_dev_auto_seed) {
-                    this.logMessage(`The following table is empty: '[dbo].[${dbTable.name}]'.`)
-                    this.logMessage(`Auto seed on! Loading seed meta for '[dbo].[${dbTable.name}]'...`)
-                    let foundMeta = false;
-                    let success = false;
+                    this.logMessage(`The following table is empty: '[dbo].[${tableName}]'`)
+                    this.logMessage(`Auto seed is on! Loading seed meta for '[dbo].[${tableName}]'...`)
 
-                    (foundMeta)
-                        ? this.logMessage(`--> Loaded seed meta for '[dbo].[${dbTable.name}]'.`)
-                        : this.logWarning(`No seed data for '[dbo].[${dbTable.name}]'.`);
+                    const foundMeta = await this.loadLocalSeedData(parentDir, tableName )
 
-                    (success)
-                        ? this.logMessage(`--> Successfully seeded '[dbo].[${dbTable.name}]'!`)
-                        : this.logMessage(`--> Failed to seed data for '[dbo].[${dbTable.name}]'.`);
-
-
+                    if (foundMeta) {
+                        this.logMessage(`--> Loaded seed meta for '[dbo].[${tableName}]'.`)
+                        this.logMessage(`--> Successfully seeded '[dbo].[${tableName}]'!`)
+                    } else {
+                        this.logWarning(`No seed data for '[dbo].[${tableName}]'`);
+                        this.logMessage(`--> Failed to seed data for '[dbo].[${tableName}]'`);
+                    }
 
                 } else {
-                    this.logWarning(`The following table is empty: '[dbo].[${dbTable.name}]'.`)
+                    this.logWarning(`The following table is empty: '[dbo].[${tableName}]'.`)
                     this.logMessage(`Try setting 'DB_DEV_AUTO_SEED=true' in your local environment.`)
                 }
             }
-
         }
     },
 
     // Brute force check all local models against loaded db schemas (this gets nasty)
-    async compareSchema(sequelize, db, local) {
+    async compareSchema(sequelize, db, local, parentDir) {
         let synced = false
 
         // Loop Local Models
@@ -207,7 +195,7 @@ module.exports = {
                     }
 
                     // Be nice to the devs, maybe they want free seed data
-                    await this.checkToSeed(sequelize, dbTable)
+                    await this.checkIfEmpty(sequelize, dbTable, parentDir)
                 }
             }
             // If we bottom out to here, them somehow this table didn't get synced. Make sure it's known
@@ -237,9 +225,9 @@ module.exports = {
                     { raw: true, logging: console.log }
                 )
 
-                const results = await this.getTableAttributes(sequelize, dbTable.name)
+                const { columns, columnCount } = await this.getTableAttributes(sequelize, dbTable.name)
 
-                console.log(results[0])
+                console.log(columns, columnCount)
 
             } else {
                 this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
@@ -333,7 +321,7 @@ module.exports = {
                 this.logMessage(`No local schema found. Check Configuration.`)
             else {
                 // Deep compares each row in every table
-                await this.compareSchema(sequelize, dbModels, localModels)
+                await this.compareSchema(sequelize, dbModels, localModels, parentDir)
             }
 
             // In theory, we'll error out or die before we get here
@@ -351,7 +339,7 @@ module.exports = {
     // the DB. This helps us because now we have a version controlled history of migrations,
     // and can use these schema to revert changes in a pinch if need be. 
     async generateBackup() {
-        let migrationFileName = "SomethingCool.js"
+        let migrationFileName = "SomethingCool.js" // TODO - this whole function lol
         this.logMessage(`Generating backup... `)
         this.logMessage(`Done! --> '/server/migrations/${migrationFileName}.js'`)
     },
