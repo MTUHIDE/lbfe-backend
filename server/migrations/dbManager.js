@@ -232,12 +232,11 @@ module.exports = {
             } else {
                 this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
                 this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first.`)
-                if (config.app === 'dev')
-                    this.logMessage(`--> Alternatively, set 'DB_DEV_AUTO_FIX=true' in your env file.`)
+                this.logMessage(`--> Alternatively, set 'DB_DEV_AUTO_FIX=true' in your env file.`)
             }
         } else {
             this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
-            this.logMessage(`--> Not a development environment. Contact your adminstration.`)
+            this.logMessage(`--> Contact your adminstration.`)
         }
 
     },
@@ -341,6 +340,7 @@ module.exports = {
     async generateBackup() {
         let migrationFileName = "SomethingCool.js" // TODO - this whole function lol
         this.logMessage(`Generating backup... `)
+        this.logMessage(`Not yet implemented. Pretend it does something lol.`)
         this.logMessage(`Done! --> '/server/migrations/${migrationFileName}.js'`)
     },
 
