@@ -9,7 +9,7 @@ This service (the '`API`') uses an express server and Nodejs to connect our fron
 This service is also equiped with a <strong>DB Manager</strong> that handles the logic of verifying the state of the connected database for you. 
 
 # Developers
-Here we list out some useful information for any new developer getting started with the project.
+Here we list out some useful information for any new developer getting started with the project. If you haven't already, see the [Getting Started Guide](https://houghtonlittlebrothers.sharepoint.com/:w:/r/sites/mtulbfemedtransproject/Shared%20Documents/Developer%20Space/Getting%20Stated%20Guide.docx?d=w2909ee9daa3a42238df616b11042623b&csf=1&web=1&e=kcNI3a)
 ## Getting Started
 To run the project: First clone the repo, and then run 
 ```bash

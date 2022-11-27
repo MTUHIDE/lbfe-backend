@@ -13,9 +13,8 @@ module.exports = {
     db_user: process.env.DB_USER,
     db_password: process.env.DB_PASSWORD,
     db_logging: process.env.DB_LOGGING === 'true',
-    db_dev_auto_fix: process.env.DB_DEV_AUTO_SEED === 'true',
+    db_dev_auto_fix: process.env.DB_DEV_AUTO_FIX === 'true',
     db_dev_auto_seed: process.env.DB_DEV_AUTO_SEED === 'true',
-
 
     // JWT Info
     jwt_encryption: process.env.JWT_ENCRYPTION,
