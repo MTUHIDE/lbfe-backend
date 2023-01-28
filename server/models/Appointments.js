@@ -72,12 +72,12 @@ module.exports = (sequelize, DataTypes) => {
                 alias: "Driver ID",
                 aliasValue: "driverid",
             },
-            clientId: {
+            elderId: {
                 type: DataTypes.INTEGER,
-                field: "clientId",
+                field: "elderId",
                 searchable: true,
-                alias: "Client ID",
-                aliasValue: "clientid",
+                alias: "Elder ID",
+                aliasValue: "elderid",
             },
             isCancelled: {
                 type: DataTypes.BOOLEAN,

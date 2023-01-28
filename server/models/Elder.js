@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define(
-        'Clients',
+        'Elders',
         {
-            clientId: {
+            elderId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
-                field: "clientId",
+                field: "elderId",
                 primaryKey: true,
                 autoIncrement: true,
                 searchable: true,
-                alias: "Client ID",
-                aliasValue: "clientId",
+                alias: "Elder ID",
+                aliasValue: "elderId",
             },
 
             firstName: {
@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
             },
         },
         {
-            tableName: "Clients",
+            tableName: "Elders",
             timestamps: false,
         },
         )
