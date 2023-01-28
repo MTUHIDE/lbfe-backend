@@ -67,7 +67,7 @@ const methods = {
         const pickupAddress = req.body.pickupAddress
         const destinationAddress = req.body.destinationAddress
         const driverId = req.body.driverId
-        const clientId = req.body.clientId
+        const elderId = req.body.elderId
         const isAllDay = req.body.isAllDay
         const createdDate = new Date().toISOString().slice(0, 23).replace('T', ' ') // Format to sqlserver datetime object
 
@@ -89,7 +89,7 @@ const methods = {
             createdAt: createdDate,
             updatedAt: createdDate,
             driverId: driverId,
-            clientId: clientId,
+            elderId: elderId,
             isCancelled: 0, // We just made it
             isArchived: 0,
             isAllDay: isAllDay,
@@ -108,7 +108,7 @@ const methods = {
         const pickupAddress = req.body.pickupAddress
         const destinationAddress = req.body.destinationAddress
         const driverId = req.body.driverId
-        const clientId = req.body.clientId
+        const elderId = req.body.elderId
         const isAllDay = req.body.isAllDay
         const updatedAt = new Date().toISOString().slice(0, 23).replace('T', ' ')
         const isCancelled = req.body.isCancelled
@@ -135,7 +135,7 @@ const methods = {
             destinationAddress: destinationAddress,
             updatedAt: updatedAt,
             driverId: driverId,
-            clientId: clientId,
+            elderId: elderId,
             isCancelled: isCancelled,
             isArchived: isArchived,
             isAllDay: isAllDay
