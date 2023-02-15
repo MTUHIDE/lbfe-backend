@@ -65,12 +65,26 @@ module.exports = (sequelize, DataTypes) => {
                 alias: "Driver Notes",
                 aliasValue: "drivernotes",
             },
+            createdBy: {
+                type: DataTypes.STRING,
+                field: "createdBy",
+                searchable: true,
+                alias: "Created By",
+                aliasValue: "createdby",
+            },
             createdAt: {
                 type: DataTypes.DATE,
                 field: "createdAt",
                 searchable: true,
                 alias: "Created At",
                 aliasValue: "createdat",
+            },
+            updatedBy:{
+                type: DataTypes.STRING,
+                field: "updatedBy",
+                searchable: true,
+                alias: "Updated By",
+                aliasValue: "updatedby"
             },
             updatedAt: {
                 type: DataTypes.DATE,

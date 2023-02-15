@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         'PhoneNumbers',
         {
 
-            phoneNumberId:{
+            phoneNumberId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'phoneNumberId',
@@ -13,8 +13,7 @@ module.exports = (sequelize, DataTypes) => {
                 alias: 'Phone Number ID',
                 aliasValue: 'phoneNumberId',
             },
-
-            referenceId:{
+            referenceId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'referenceId',
@@ -27,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
             // },
 
-            phoneNumber:{
+            phoneNumber: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 field: 'phoneNumber',
@@ -35,8 +34,7 @@ module.exports = (sequelize, DataTypes) => {
                 alias: 'Phone Number',
                 aliasValue: 'phoneNumber',
             },
-
-            phoneExtension:{
+            phoneExtension: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'phoneExtension',
@@ -44,8 +42,7 @@ module.exports = (sequelize, DataTypes) => {
                 alias: 'Phone Extension',
                 aliasValue: 'phoneExtension',
             },
-
-            description:{
+            description: {
                 type: DataTypes.STRING,
                 allowNull: false,
                 field: 'description',
@@ -53,14 +50,41 @@ module.exports = (sequelize, DataTypes) => {
                 alias: 'Description',
                 aliasValue: 'description',
             },
-
-            order:{
+            order: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 field: 'order',
                 searchable: true,
                 alias: 'Order',
                 aliasValue: 'order',
+            },
+            createdBy: {
+                type: DataTypes.STRING,
+                field: "createdBy",
+                searchable: true,
+                alias: "Created By",
+                aliasValue: "createdby",
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                field: "createdAt",
+                searchable: true,
+                alias: "Created At",
+                aliasValue: "createdat",
+            },
+            updatedBy: {
+                type: DataTypes.STRING,
+                field: "updatedBy",
+                searchable: true,
+                alias: "Updated By",
+                aliasValue: "updatedby"
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                field: "updatedAt",
+                searchable: true,
+                alias: "Updated At",
+                aliasValue: "updatedat",
             },
         },
         {

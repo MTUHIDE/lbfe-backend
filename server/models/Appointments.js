@@ -51,20 +51,6 @@ module.exports = (sequelize, DataTypes) => {
                 searchable: true,
                 alias: "Destination Address",
             },
-            createdAt: {
-                type: DataTypes.DATE,
-                field: "createdAt",
-                searchable: true,
-                alias: "Created At",
-                aliasValue: "createdat",
-            },
-            updatedAt: {
-                type: DataTypes.DATE,
-                field: "updatedAt",
-                searchable: true,
-                alias: "Updated At",
-                aliasValue: "updatedat",
-            },
             driverId: {
                 type: DataTypes.INTEGER,
                 field: "driverId",
@@ -99,6 +85,41 @@ module.exports = (sequelize, DataTypes) => {
                 searchable: true,
                 alias: "Is All Day",
                 aliasValue: "isallday",
+            },
+            needsLBFEVehicle: {
+                type: DataTypes.BOOLEAN,
+                field: "needsLBFEVehicle",
+                searchable: true,
+                alias: "Needs LBFE Vehicle",
+                aliasValue: "needLBFEVehicle",
+            },         
+            createdBy: {
+                type: DataTypes.STRING,
+                field: "createdBy",
+                searchable: true,
+                alias: "Created By",
+                aliasValue: "createdby",
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+                field: "createdAt",
+                searchable: true,
+                alias: "Created At",
+                aliasValue: "createdat",
+            },
+            updatedBy:{
+                type: DataTypes.STRING,
+                field: "updatedBy",
+                searchable: true,
+                alias: "Updated By",
+                aliasValue: "updatedby"
+            },
+            updatedAt: {
+                type: DataTypes.DATE,
+                field: "updatedAt",
+                searchable: true,
+                alias: "Updated At",
+                aliasValue: "updatedat",
             },
         },
         {
