@@ -77,7 +77,7 @@ module.exports = {
         })
         const columnCount = results[1]
 
-        return {columns, columnCount}
+        return { columns, columnCount }
     },
 
     // Load all models from the '/models' directory 
@@ -114,9 +114,15 @@ module.exports = {
         try { // Try to read the meta. If we can, then return true (since we did load and ran whatever was in there)
             const data = fs.readFileSync(seedFile, 'utf8');
             console.log(data);
-          } catch (err) {
+        } catch (err) {
+            this.logWarning(`--> '${seedFile}' doesn't exist. Creating file...`)
+            fs.writeFile(seedFile, "// TODO - Not Implemented!!! - Add seed data here!!", (error) => {
+                if (error)
+                    this.logError(error)
+            })
+            this.logMessage(`--> '${seedFile}' was made!! Add seed data if you want, and restart service!!`)
             console.error(err);
-          }
+        }
 
         return false
 
@@ -131,26 +137,29 @@ module.exports = {
                 `SELECT 1 FROM [dbo].[${dbTable.name}]
                     WHERE EXISTS( SELECT [${dbTable.columns[0]}] FROM [dbo].[${dbTable.name}]);`
                 , { raw: true })
-            
+
             const tableName = dbTable.name
+
+            // Sessions is an auto-generated table, we can ignore it
             if (result[1] == 0 && tableName != "Sessions") { // If there's nothing, seed it
+                this.logMessage(`Empty table: '[dbo].[${tableName}]'`)
+
                 if (config.db_dev_auto_seed) {
-                    this.logMessage(`The following table is empty: '[dbo].[${tableName}]'`)
                     this.logMessage(`Auto seed is on! Loading seed meta for '[dbo].[${tableName}]'...`)
 
-                    const foundMeta = await this.loadLocalSeedData(parentDir, tableName )
+                    const foundMeta = await this.loadLocalSeedData(parentDir, tableName)
 
                     if (foundMeta) {
                         this.logMessage(`--> Loaded seed meta for '[dbo].[${tableName}]'.`)
                         this.logMessage(`--> Successfully seeded '[dbo].[${tableName}]'!`)
                     } else {
+                        this.logMessage(`NOTE: AUTO SEEDING IS WIP!!!! If you're interested, you can fix that! ;)'`) // Comment out once this works
                         this.logWarning(`No seed data for '[dbo].[${tableName}]'`);
                         this.logMessage(`--> Failed to seed data for '[dbo].[${tableName}]'`);
                     }
 
                 } else {
-                    this.logWarning(`The following table is empty: '[dbo].[${tableName}]'.`)
-                    this.logMessage(`Try setting 'DB_DEV_AUTO_SEED=true' in your local environment.`)
+                    // this.logMessage(`Try setting 'DB_DEV_AUTO_SEED=true' in your local environment.`)
                 }
             }
         }
@@ -216,27 +225,26 @@ module.exports = {
                 let columnType = columnMeta.type
                 if (columnType.toString() === 'NVARCHAR(255)')
                     columnType = 'VARCHAR(255)'
-
-                // Find the meta for our missing column and try to add it
-                // NOTE: We're using raw queries here. This is not best practice
-                await sequelize.query(
-                    `ALTER TABLE ${dbTable.name} ADD ` +
-                    `[${missingColumn}] [${columnType}];`,
-                    { raw: true, logging: console.log }
-                )
-
-                const { columns, columnCount } = await this.getTableAttributes(sequelize, dbTable.name)
-
-                console.log(columns, columnCount)
-
+                    
+                    // Find the meta for our missing column and try to add it
+                    // NOTE: We're using raw queries here. This is not best practice
+                try {
+                    await sequelize.query(
+                        `ALTER TABLE ${dbTable.name} ADD ` +
+                        `[${missingColumn}] ${columnType};`,
+                        { raw: true, logging: console.log }
+                    )
+                } catch (err) {
+                    this.logError(err)
+                }
             } else {
                 this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
-                this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first.`)
-                this.logMessage(`--> Alternatively, set 'DB_DEV_AUTO_FIX=true' in your env file.`)
+                this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first!!!`)
+                this.logMessage(`--> Alternatively, set 'DB_DEV_AUTO_FIX=true' in your env file (ONLY IF THIS IS LOCAL DEV ENVIRONMENT!!!)`)
             }
         } else {
             this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
-            this.logMessage(`--> Contact your adminstration.`)
+            this.logMessage(`--> Contact your adminstration!!!`)
         }
 
     },
@@ -288,8 +296,9 @@ module.exports = {
                 // Comment out this next block (upon uncommenting the above)
                 // if you want your logs to be pretty
                 // =================================
-                this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first.`)
+                this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first!!!`)
                 this.logMessage(`--> code can be found in '/server/migrations/dbManager.js:214:214'`)
+                this.logMessage(`--> To enable AUTO-FIX, set 'DB_DEV_AUTO_FIX=true' in your local config (DO NOT SET THIS TO TRUE OUTSIDE LOCAL DEV, YOU WILL LOSE DATA!!!)`)
                 // =================================
 
                 // DO NOT EVER PUSH CHANGES TO THIS TO REMOTE
@@ -326,10 +335,10 @@ module.exports = {
             // In theory, we'll error out or die before we get here
         } catch (err) { console.log(err) }
 
-        if ((warningCount != 0) || (errorCount != 0))
-            this.logMessage(`Finished with ${errorCount} errors and ${warningCount} warnings.`)
-        else
-            this.logMessage(`Done! Happy coding :) `)
+        if ((warningCount != 0) || (errorCount != 0)) {
+            this.logMessage(`Finished with ${errorCount} errors and ${warningCount} warnings. All code breaking issues resolved.`)
+        }
+        this.logMessage(`Done! Happy coding :) `)
     },
 
     // This function takes all loaded connected DB schema, and generates a backup json object.

@@ -16,7 +16,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const CONFIG = require('./config/config')   // Load structs to pass to express
 const logger = require('./logger/logger')
 const models = require('./models')          // Custom database objects for use with sequelize
-const dbManager = require('./migrations/dbManager')
+const dbManager = require('./helpers/dbManager')
 
 logger.info(`Environment: ${CONFIG.app}`)   // Post Environment for the 'logs/server.log'
 
