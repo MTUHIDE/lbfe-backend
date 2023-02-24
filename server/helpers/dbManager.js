@@ -142,7 +142,8 @@ module.exports = {
 
             // Sessions is an auto-generated table, we can ignore it
             if (result[1] == 0 && tableName != "Sessions") { // If there's nothing, seed it
-                this.logMessage(`Empty table: '[dbo].[${tableName}]'`)
+                this.logMessage(`--> Empty table: '[dbo].[${tableName}]'`)
+                this.logMessage(`-->[NOTE]: An empty table isn't bad!!! It just has no data... Try adding data via postman!`)
 
                 if (config.db_dev_auto_seed) {
                     this.logMessage(`Auto seed is on! Loading seed meta for '[dbo].[${tableName}]'...`)
@@ -153,7 +154,7 @@ module.exports = {
                         this.logMessage(`--> Loaded seed meta for '[dbo].[${tableName}]'.`)
                         this.logMessage(`--> Successfully seeded '[dbo].[${tableName}]'!`)
                     } else {
-                        this.logMessage(`NOTE: AUTO SEEDING IS WIP!!!! If you're interested, you can fix that! ;)'`) // Comment out once this works
+                        this.logMessage(`[NOTE]: AUTO SEEDING IS WIP!!!! If you're interested, you can fix that! ;)'`) // Comment out once this works
                         this.logWarning(`No seed data for '[dbo].[${tableName}]'`);
                         this.logMessage(`--> Failed to seed data for '[dbo].[${tableName}]'`);
                     }
@@ -232,11 +233,12 @@ module.exports = {
                     await sequelize.query(
                         `ALTER TABLE ${dbTable.name} ADD ` +
                         `[${missingColumn}] ${columnType};`,
-                        { raw: true, logging: console.log }
+                        { raw: true }
                     )
                 } catch (err) {
                     this.logError(err)
                 }
+                this.logMessage(`--> Column Added! You're welcome <3`)
             } else {
                 this.logError(`Missing column: '[${missingColumn}]' on '[dbo].[${dbTable.name}]'`)
                 this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first!!!`)
@@ -298,7 +300,7 @@ module.exports = {
                 // =================================
                 this.logMessage(`--> Auto resolve is disabled by default. Try to resolve manually first!!!`)
                 this.logMessage(`--> code can be found in '/server/migrations/dbManager.js:214:214'`)
-                this.logMessage(`--> To enable AUTO-FIX, set 'DB_DEV_AUTO_FIX=true' in your local config (DO NOT SET THIS TO TRUE OUTSIDE LOCAL DEV, YOU WILL LOSE DATA!!!)`)
+                this.logMessage(`--> To enable AUTO-FIX, set 'DB_DEV_AUTO_FIX=true' in your local config. (DO NOT SET THIS TO TRUE OUTSIDE LOCAL DEV, YOU WILL LOSE DATA!!!)`)
                 // =================================
 
                 // DO NOT EVER PUSH CHANGES TO THIS TO REMOTE
@@ -318,7 +320,8 @@ module.exports = {
     //     trying to resolve any issues... (yeehaw)
     async detectDatabase(sequelize, parentDir) {
         try {
-            this.logMessage(`Running db verification...`)
+            this.logMessage("===================================")
+            this.logMessage(`Running DB verification...`)
             const dbModels = await this.loadConnectedDBSchema(sequelize)
             const localModels = await this.loadLocalModels(parentDir)
 
@@ -338,7 +341,8 @@ module.exports = {
         if ((warningCount != 0) || (errorCount != 0)) {
             this.logMessage(`Finished with ${errorCount} errors and ${warningCount} warnings. All code breaking issues resolved.`)
         }
-        this.logMessage(`Done! Happy coding :) `)
+        this.logMessage("==================================")
+        this.logMessage(`Done! DB '${config.db_name}' is good to go! Happy coding :)`)
     },
 
     // This function takes all loaded connected DB schema, and generates a backup json object.
