@@ -1,3 +1,6 @@
+/*
+    Please comment everything u can thank you
+*/
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
