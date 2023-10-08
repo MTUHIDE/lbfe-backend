@@ -9,10 +9,11 @@ const logger = require('../logger/logger')
 
 const methods = {
 
-    // Destrtucture ID from request and call query with that ID
+    // Destructure ID from request and call query with that ID
     async getClientById(req, res) {
         const cId = req.query.id
 
+        // If that id doesn't exist, that sucks, oh well
         if (!cId) return res.status(403).json({ status: "failed", message: "Invalid request." })
 
         const client = await db.Clients.findOne({
@@ -84,7 +85,7 @@ const methods = {
             }))
         ) return res.status(403).json({ message: "error", message: "Client doesn't exist." })
 
-        const success = await db.Clients.update({ // returns boolean iff success
+        const success = await db.Clients.update({ // returns boolean if success
             firstName: firstName,
             lastName: lastName,
             fullName: fullName,

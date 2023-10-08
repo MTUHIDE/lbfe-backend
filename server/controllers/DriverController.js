@@ -9,10 +9,11 @@ const logger = require('../logger/logger')
 
 const methods = {
 
-    // Destrtucture ID from request and call query with that ID
+    // Destructure ID from request and call query with that ID
     async getDriverById(req, res) {
         const dId = req.query.id
 
+        // If that id doesn't exist, that sucks, oh well
         if (!dId) return res.status(403).json({ status: "failed", message: "Invalid request." })
 
         const driver = await db.Drivers.findOne({
@@ -81,7 +82,7 @@ const methods = {
             }))
         ) return res.status(403).json({ message: "error", message: "Driver doesn't exist." })
 
-        const success = await db.Drivers.update({ // returns boolean iff success
+        const success = await db.Drivers.update({ // returns boolean if success
             driverId: driverId,
             firstName: firstName,
             lastName: lastName,
