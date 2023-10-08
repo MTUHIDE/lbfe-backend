@@ -12,10 +12,11 @@ const logger = require('../logger/logger')
 
 const methods = {
 
-    // Destrtucture ID from request and call query with that ID
+    // Destructure ID from request and call query with that ID
     async getAppointmentById(req, res) {
         const aId = req.query.id
 
+        // If that id doesn't exist, that sucks, oh well
         if (!aId) return res.status(403).json({ status: "failed", message: "Invalid request." })
 
         const appointment = await db.Appointments.findOne({
@@ -50,7 +51,7 @@ const methods = {
         return res.status(200).json({ status: "success", count, appointments })
     },
 
-    // Take in the fields for an appoitment, if the appoitment exists, update it, otherwise create it
+    // Take in the fields for an appointment, if the appointment exists, update it, otherwise create it
     async createAppointment(req, res) {
         const startDate = req.body.startDate
         const endDate = req.body.endDate
@@ -82,7 +83,7 @@ const methods = {
         return res.status(200).json({ message: "success", appointment })
     },
 
-    // Take in the fields for an appoitment, if the appoitment exists, update it
+    // Take in the fields for an appointment, if the appointment exists, update it
     async editAppointment(req, res) {
         const appointmentId = req.body.appointmentId
         const startDate = req.body.startDate
@@ -110,7 +111,7 @@ const methods = {
             }))
         ) return res.status(403).json({ message: "error", message: "Appointment doesn't exist." })
 
-        const success = await db.Appointments.update({ // returns boolean iff success
+        const success = await db.Appointments.update({ // returns boolean if success
             startDate: startDate,
             endDate: endDate,
             title: title,
