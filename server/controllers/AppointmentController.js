@@ -63,7 +63,7 @@ const methods = {
         const clientId = req.body.clientId
         const isAllDay = req.body.isAllDay
         const createdDate = new Date().toISOString().slice(0, 23).replace('T', ' ') // Format to sqlserver datetime object
-
+        //Creation portion of the method
         const appointment = await db.Appointments.create({
             startDate: startDate,
             endDate: endDate,
@@ -110,7 +110,7 @@ const methods = {
                 raw: true
             }))
         ) return res.status(403).json({ message: "error", message: "Appointment doesn't exist." })
-
+        // This does the actual updating in the editAppointment method
         const success = await db.Appointments.update({ // returns boolean if success
             startDate: startDate,
             endDate: endDate,

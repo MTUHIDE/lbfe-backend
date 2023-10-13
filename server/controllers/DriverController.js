@@ -36,13 +36,13 @@ const methods = {
     async createDriver(req, res) {
         const firstName = req.body.firstName
         const lastName = req.body.lastName
-        const fullName = firstName + ' ' + lastName // Yeet
+        const fullName = firstName + ' ' + lastName // Yeet (Still curious how a full name field is useful?)
         const insuranceId = req.body.insuranceId
         const notes = req.body.notes
         const phoneNumber = req.body.phoneNumber
         const address = req.body.address
         const createdDate = new Date().toISOString().slice(0, 23).replace('T', ' ') // Format to sqlserver datetime object
-
+        // Populates all the fields in driver with the requested data
         const driver = await db.Drivers.create({
             firstName: firstName,
             lastName: lastName,

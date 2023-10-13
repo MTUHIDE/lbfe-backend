@@ -36,7 +36,7 @@ const methods = {
     async createClient(req, res) {
         const firstName = req.body.firstName
         const lastName = req.body.lastName
-        const fullName = firstName + ' ' + lastName // Yeet
+        const fullName = firstName + ' ' + lastName // Yeet (Do we need a full name variable?)
         const notes = req.body.notes
         const phoneNumber = req.body.phoneNumber
         const address = req.body.address
@@ -85,7 +85,7 @@ const methods = {
             }))
         ) return res.status(403).json({ message: "error", message: "Client doesn't exist." })
 
-        const success = await db.Clients.update({ // returns boolean if success
+        const success = await db.Clients.update({ // returns boolean if success or fail
             firstName: firstName,
             lastName: lastName,
             fullName: fullName,
@@ -104,6 +104,7 @@ const methods = {
     },
 
     // Full send --> kill anything you tell us to 
+    // Should this also have a fail option and a try again option if the client isn't found?
     async deleteClient(req, res) {
         const dId = req.body.clientId
         await db.Clients.destroy({ where: { clientId: dId } })
