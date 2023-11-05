@@ -10,6 +10,8 @@ const path = require('path')
 const session = require('express-session')
 const Sequelize = require('sequelize')
 
+// Fixing 304 Errors
+
 // initialize sequelize with session store
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
