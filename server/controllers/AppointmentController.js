@@ -69,6 +69,8 @@ const methods = {
         const driverId = req.body.driverId
         const elderId = req.body.elderId
         const isAllDay = req.body.isAllDay
+        const marquette = req.body.marquette
+        const baraga = req.body.baraga
         const createdDate = new Date().toISOString().slice(0, 23).replace('T', ' ') // Format to sqlserver datetime object
 
         // Prune input for bad data
@@ -93,6 +95,8 @@ const methods = {
             isCancelled: 0, // We just made it
             isArchived: 0,
             isAllDay: isAllDay,
+            marquette:false,
+            baraga:false
         })
 
         return res.status(200).json({ message: "success", appointment })
