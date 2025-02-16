@@ -1,9 +1,14 @@
-FROM lbosqmsft/mssql-nodejs-tedious:latest
-RUN mkdir /app
-ADD ./app /app
+FROM node:18
 WORKDIR /app
-
+COPY package.json .
 RUN npm install
+COPY . .
 
-RUN chmod +x ./entrypoint.sh
-CMD /bin/bash ./entrypoint.sh
+
+EXPOSE 5000
+
+CMD ["npm", "run", "start"]
+
+
+#use  docker build -t "lbfe-backend" .
+#use docker run -d -p 5000:5000 --name "backend-container" lbfe-backend
