@@ -1,14 +1,20 @@
-FROM node:18
+#you can change it from 22 to 18 if its not working properly 
+FROM node:22
+
 WORKDIR /app
-COPY package.json .
+
+COPY package*.json ./
+
 RUN npm install
+
 COPY . .
 
+ENV PORT=9010
 
-EXPOSE 3000
+EXPOSE 9010
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "server-dev"]
 
 
 #use  docker build -t "lbfe-backend" .
-#use docker run -d -p 3000:3000 --name "backend-container" lbfe-backend
+#use docker run -p 9010:9010 --name "backend-container" lbfe-backend

@@ -1,1 +1,0 @@
--- You don't need this anymore. Everything is synced up by sequelize. 
