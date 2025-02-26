@@ -45,6 +45,18 @@ module.exports = (sequelize, DataTypes) => {
                 searchable: true,
                 alias: "Pickup Address",
             },
+            marquette: {
+                type: DataTypes.BOOLEAN,
+                field: "marquette",
+                searchable: true,
+                alias: "Marquette",
+            },
+            baraga: {
+                type: DataTypes.BOOLEAN,
+                field: "baraga",
+                searchable: true,
+                alias: "Baraga",
+            },
             destinationAddress: {
                 type: DataTypes.STRING,
                 field: "destinationAddress",

@@ -38,6 +38,11 @@ To add routes, simply add a file into the '`/routes`' directory. We follow the n
 ## Postman
 For developers, see the little-brothers [Postman Workspace](https://michigan-technological-university-student-plan.postman.co/workspace/77548b2e-e53a-4b99-81c5-ab5a2fff1920/collection/23674592-2fa55a40-082e-491d-afd2-3543e13249d6) for examples. Also note that all 'Get One' routes take in an id as a query param (`?id=1`) appended to the end, and all Post routes simply take a body object containing the fields necessary. 
 
+
+##Prefix for all
+Prefix: '`/api`'
+example: '`/api/elders/create`'
+
 ## Appointments
 Prefix: '`/appointment`'
 
@@ -57,7 +62,7 @@ Prefix: '`/drivers`'
 - Post Delete   - '`/delete`'
 
 ## Clients
-Prefix:'`/clients`'
+Prefix:'`/elders`'
 
 - Get One       - '`/`'
 - Get All'      - '`/list`'

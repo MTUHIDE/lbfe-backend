@@ -6,17 +6,9 @@
 /vendor
 .env
 .env.backup
-.phpunit.result.cache
 Homestead.json
 Homestead.yaml
-auth.json
-npm-debug.log
-yarn-error.log
 /.idea
 /.vscode
 logs/server.log
-package-lock.json
-server/config/.env.development
 server/config/.env.development.bat
-server/config/.env.development.bat.example
-server/config/.env.development.example
