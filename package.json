@@ -5,6 +5,7 @@
     "description": "api",
     "main": "app.js",
     "scripts": {
+        "preinstall": "npm i nodemon -g",
         "start": ". server/config/.env.development && nodemon server/app.js",
         "runit": "nodemon server/app.js",
         "dockerify": "docker build -t ec-api-test -f Dockerfile.ci . && docker run --rm ec-api-test",

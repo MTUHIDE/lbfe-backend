@@ -10,6 +10,14 @@ This service is also equiped with a <strong>DB Manager</strong> that handles the
 
 # Developers
 Here we list out some useful information for any new developer getting started with the project. If you haven't already, see the [Getting Started Guide](https://houghtonlittlebrothers.sharepoint.com/:w:/r/sites/mtulbfemedtransproject/Shared%20Documents/Developer%20Space/Getting%20Stated%20Guide.docx?d=w2909ee9daa3a42238df616b11042623b&csf=1&web=1&e=kcNI3a)
+
+# To run the app in docker do:
+
+```
+docker compose up --build
+```
+
+
 ## Getting Started
 To run the project: First clone the repo, and then run 
 ```bash
@@ -28,6 +36,8 @@ npm run server-dev
 ```
 npm run start
 ```
+
+
 
 # Routes
 For convenience, here is a list of all active routes. When running locally, you can check the liveness of the API by going to `http://localhost:9010/status`.

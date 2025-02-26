@@ -1,0 +1,16 @@
+set APP=dev
+set PORT=9010
+set SESSION_SECRET=testing
+set LOG_LEVEL=debug
+set DB_HOST=localhost
+set DB_PORT=1433
+set DB_NAME=lbfe_dev
+set DB_USER=sid
+set DB_PASSWORD=sid@!1234
+set DB_LOGGING=false
+set DB_DEV_AUTO_FIX=false
+set DB_DEV_AUTO_SEED=false
+set JWT_ENCRYPTION=people-powered
+set JWT_EXPIRATION=120
+set DISABLE_CORS=true
+set DD_TRACE_ENABLED=0

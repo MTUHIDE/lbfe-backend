@@ -1,13 +1,61 @@
-version: "3"
+volumes:
+  sqlserver_data1:
+
 services:
-    web:
-        build: .
-        ports:
-            - "3000:3000"
-        depends_on:
-            - db
-    db:
-        image: "microsoft/mssql-server-linux:ctp1-3"
-        environment:
-            SA_PASSWORD: "1"
-            ACCEPT_EULA: "Y"
+  server:
+    container_name: server
+    build:
+      context: .
+    environment:
+      NODE_ENV: development
+      DB_HOST: sqlserver
+      DB_USER: sa
+      DB_PASSWORD: ${SA_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: 1433
+    ports:
+      - 9010:9010
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${SA_PASSWORD}
+      - MSSQL_PID=Developer
+    user: root
+    ports:
+      - 1433:1433
+    volumes:
+      - sqlserver_data1:/var/opt/mssql
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -C -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+  sqlserver.configurator:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    user: root
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    command: >
+      bash -c '
+      /opt/mssql-tools18/bin/sqlcmd -S sqlserver -U sa -P ${SA_PASSWORD} -C -d master -i docker-entrypoint-initdb.d/init.sql;
+      echo "All done!";
+      '
+  frontend:
+    container_name: frontend
+    build:
+      context: C:\programming\LBFE\lbfe-frontend  # Adjust this path to where your frontend code and Dockerfile are located
+    ports:
+      - "8080:80" 
+    depends_on:
+      - server
+  
