@@ -16,7 +16,7 @@ yarn-error.log
 /.vscode
 logs/server.log
 package-lock.json
-!server/config/.env.development
-!server/config/.env.development.bat
+server/config/.env.development
+server/config/.env.development.bat
 server/config/.env.development.bat.example
 server/config/.env.development.example
